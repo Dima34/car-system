@@ -1,0 +1,11 @@
+.car-card img{
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
+  
+.car-card_footer{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
