@@ -17,7 +17,7 @@ function OptionList(props){
 function Select(props) {
     return(
         <select value = {props.value} name={props.name} onChange={(e)=>props.handleChange(e)}>
-            <option value="0">Не выбрано</option>
+            <option value="">Не выбрано</option>
             <OptionList array={props.list} />
         </select>
     )
@@ -107,9 +107,10 @@ function Filter(props) {
                 />
             </label>    
             <div className="filter_footer">
+                <p>{props.queryLine.length}</p>
                 <button onClick={()=>props.makeSearch()}>Поиск</button>
                 <button id="search-by-collection">Поиск по коллекции</button>
-                <button id="add-to-collection">Добавить в коллекцию</button>
+                <button onClick={()=>props.addToCollection()} disabled = {props.queryLine.length == 0 ? true : false} >Добавить в коллекцию</button>
             </div>
         </Container> 
     )

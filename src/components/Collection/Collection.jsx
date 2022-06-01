@@ -7,7 +7,14 @@ function Collection(props) {
         <Container addClass = "collection">
             <h2>Коллекция</h2>
             <ul className="colection__items">
-                <CollectionCard />
+                {
+                    props.collectionsList.map(collectionItem=>(
+                        <CollectionCard 
+                            key = {collectionItem.id}
+                            data = {collectionItem}
+                        />
+                    ))
+                }
             </ul>
         </Container> 
     )

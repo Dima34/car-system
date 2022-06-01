@@ -26,15 +26,66 @@ function getMarks() {
 }
 
 function getStates() {
-  return makeRequest(statesURL).then(res => res.data );
+  return makeRequest(statesURL).then((res) => res.data);
 }
 
 function getModels(markId) {
-  return makeRequest(marksURL + markId + "/models" + APIKeyLine).then(res => res.data);
+  return makeRequest(marksURL + markId + "/models" + APIKeyLine).then(
+    (res) => res.data
+  );
 }
 
 async function makeRequest(queryLine) {
   return axios(queryLine);
 }
 
-export {getCarIdsByQuery, getCarById, getMarks, getStates, getModels};
+function createQueryLine(filterValueObj) {
+  let line = "";
+
+  for (const el in filterValueObj) {
+    let value = filterValueObj[el];
+
+    switch (el) {
+      case "markList":
+        if (value !== "") line += `&marka_id[0]=${value}`;
+        break;
+
+      case "modelList":
+        if (value !== "") line += `&model_id[0]=${value}`;
+        break;
+
+      case "yearFrom":
+        if (value !== "") line += `&s_yers[0]=${value}`;
+        break;
+
+      case "yearTo":
+        if (value !== "") line += `&po_yers[0]=${value}`;
+        break;
+
+      case "priceFrom":
+        if (value !== "") line += `&price_ot[0]=${value}`;
+        break;
+
+      case "priceTo":
+        if (value !== "") line += `&price_do[0]=${value}`;
+        break;
+      case "sortType":
+        if (value !== "") line += `&order_by=${value}`;
+        break;
+      case "state":
+        if (value !== "") line += `&state[0]=${value}&city[0]=0`;
+        break;
+    }
+  }
+
+  return line;
+}
+
+export {
+  getCarIdsByQuery,
+  getCarById,
+  getMarks,
+  getStates,
+  getModels,
+  createQueryLine,
+};
