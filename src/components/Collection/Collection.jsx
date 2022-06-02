@@ -12,6 +12,7 @@ function Collection(props) {
                         <CollectionCard 
                             key = {collectionItem.id}
                             data = {collectionItem}
+                            removeItemFromCollection = {props.removeItemFromCollection}
                         />
                     ))
                 }

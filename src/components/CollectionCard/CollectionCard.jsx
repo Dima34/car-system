@@ -1,21 +1,50 @@
 export default function CollectionCard(props) {
     let item = props.data
 
-    console.log(item);
+    const marka = item.markaName
+    const model = item.modelName
+    const priceFrom = item.priceFrom
+    const priceTo = item.priceTo
+    const yearFrom = item.yearFrom
+    const yearTo = item.yearTo
+    const sort = item.sortName
+    const state = item.stateName
 
     return(
         <li className="collection__card">
             <h3>
-                Renault Logan, 2005-2010
+                {marka} {model}
             </h3>
+
+            {priceFrom && priceTo ? (
+                <fieldset>
+                    <legend>Цена $</legend>
+                    {priceFrom}
+                    {priceFrom || priceTo ? " - " : null}
+                    {priceTo}
+                </fieldset>
+            ) : null}
+            
+            {yearFrom && yearTo ? (
+                <fieldset>
+                    <legend>Год</legend>
+                    {yearFrom}
+                    {yearFrom || yearTo ? " - " : null}
+                    {yearTo}
+                </fieldset>
+            ) : null}
+            
+            { state ? (
+                <p>
+                    Область: {state}
+                </p>
+            ) : null}
+                
             <p>
-                1000-2000$, Киев
-            </p>
-            <p>
-                Сортировка: По возростанию цены
+                Сортировка: {sort}
             </p>
 
-            <button>
+            <button onClick={()=>props.removeItemFromCollection(item.id)}>
                 X
             </button>
         </li>

@@ -8,15 +8,26 @@ function getCollections() {
   return JSON.parse(info);
 }
 
-function setCollection(newItem) {
+function addCollectionItem(item) {
   let currentCollectionsList = getCollections();
-  let newCollectionsList = [...currentCollectionsList, newItem];
-  localStorage.setItem("collections", JSON.stringify(newCollectionsList));
+  let newCollectionsList = [...currentCollectionsList, item];
+  setCollection(newCollectionsList)
   return newCollectionsList;
 }
 
-function setValueIfNotEmpty(objKey, value, object) {
-  if (value !== "") object[objKey] = value;
+function setCollection(newCollection){
+  localStorage.setItem("collections", JSON.stringify(newCollection));
+  return newCollection;
+}
+
+function setValueIfNotEmpty(objKey, value, object, valueToSet) {
+  if (value !== "") object[objKey] = valueToSet;
+}
+
+function removeCollectionItemById(id) {
+  let filteredCollection = getCollections().filter(item=>item.id !== id);
+  setCollection(filteredCollection)
+  return filteredCollection
 }
 
 // Creates an object for collection card
@@ -24,41 +35,45 @@ function getCollectionItem(filterValueObject, queryLine) {
   let object = {};
 
   for (const el in filterValueObject) {
-    let value = el;
+    let value = filterValueObject[el];
 
     object["id"] = new Date().getTime();
 
     switch (el) {
       case "markList":
-        setValueIfNotEmpty("marka", value, object);
+        setValueIfNotEmpty("marka", value.value, object, value.value);
+        setValueIfNotEmpty("markaName", value.value, object, value.name);
         break;
 
       case "modelList":
-        setValueIfNotEmpty("model", value, object);
+        setValueIfNotEmpty("model", value.value, object, value.value);
+        setValueIfNotEmpty("modelName", value.value, object, value.name);
         break;
 
       case "yearFrom":
-        setValueIfNotEmpty("year_from", value, object);
+        setValueIfNotEmpty("yearFrom", value, object, value);
         break;
 
       case "yearTo":
-        setValueIfNotEmpty("year_to", value, object);
+        setValueIfNotEmpty("yearTo", value, object, value);
         break;
 
       case "priceFrom":
-        setValueIfNotEmpty("price_ot", value, object);
+        setValueIfNotEmpty("priceFrom", value, object, value);
         break;
 
       case "priceTo":
-        setValueIfNotEmpty("price_do", value, object);
+        setValueIfNotEmpty("priceTo", value, object, value);
         break;
 
       case "sortType":
-        setValueIfNotEmpty("sort_type", value, object);
+        setValueIfNotEmpty("sort", value.value, object, value.value);
+        setValueIfNotEmpty("sortName", value.value, object, value.name);
         break;
 
       case "state":
-        setValueIfNotEmpty("state", value, object);
+        setValueIfNotEmpty("state", value.value, object, value.value);
+        setValueIfNotEmpty("stateName", value.value, object, value.name);
         break;
     }
   }
@@ -68,4 +83,4 @@ function getCollectionItem(filterValueObject, queryLine) {
   return object;
 }
 
-export { getCollections, setCollection, getCollectionItem };
+export { getCollections, addCollectionItem, getCollectionItem, removeCollectionItemById};

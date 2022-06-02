@@ -38,7 +38,7 @@ function Filter(props) {
                 Марка
                 <Select 
                     name="markList" 
-                    value = {props.valueList.markList}
+                    value = {props.valueList.markList.value}
                     list={props.marks} 
                     handleChange={props.handleSelectionChange} 
                 />
@@ -47,7 +47,7 @@ function Filter(props) {
                 Модель
                 <Select 
                     name="modelList" 
-                    value = {props.valueList.modelList}
+                    value = {props.valueList.modelList.value}
                     list={props.models} 
                     handleChange={props.handleSelectionChange} 
                 />
@@ -92,7 +92,7 @@ function Filter(props) {
                 Область
                 <Select 
                     name="state" 
-                    value = {props.valueList.state}
+                    value = {props.valueList.state.value}
                     list={props.states} 
                     handleChange={props.handleSelectionChange} 
                 />
@@ -101,7 +101,7 @@ function Filter(props) {
                 Сортировка
                 <Select 
                     name="sortType" 
-                    value = {props.valueList.sortType}
+                    value = {props.valueList.sortType.value}
                     list={props.sortTypeList} 
                     handleChange={props.handleSelectionChange} 
                 />

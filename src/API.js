@@ -47,10 +47,12 @@ function createQueryLine(filterValueObj) {
 
     switch (el) {
       case "markList":
+        value = value.value
         if (value !== "") line += `&marka_id[0]=${value}`;
         break;
 
       case "modelList":
+        value = value.value
         if (value !== "") line += `&model_id[0]=${value}`;
         break;
 
@@ -70,9 +72,11 @@ function createQueryLine(filterValueObj) {
         if (value !== "") line += `&price_do[0]=${value}`;
         break;
       case "sortType":
+        value = value.value
         if (value !== "") line += `&order_by=${value}`;
         break;
       case "state":
+        value = value.value
         if (value !== "") line += `&state[0]=${value}&city[0]=0`;
         break;
     }

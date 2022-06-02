@@ -4,7 +4,7 @@ import Collection from "./components/Collection/Collection";
 import Filter from "./components/Filter/Filter";
 import MainGrid from "./components/MainGrid/MainGrid";
 import { getCarIdsByQuery, getCarById, getMarks, getStates, getModels, createQueryLine } from "./api.js";
-import { getCollectionItem, getCollections, setCollection } from "./collections";
+import { getCollectionItem, getCollections, removeCollectionItemById, addCollectionItem } from "./collections";
 
 
 
@@ -14,7 +14,7 @@ function App(props) {
     const [states, setStates] = useState([])
     const [queryLine, setQueryLine] = useState("")
     const [carList, setСarList] = useState([])
-    const [collectionsList, setCollectionsList] = useState([])
+    const [collectionsList, setCollectionItemsList] = useState([])
     const [isFetching, setIsFetching] = useState(false)
     const sortTypes = [
         {
@@ -76,25 +76,37 @@ function App(props) {
     ]
 
     const [filterValueObj, setValueObj] = useState({
-        markList: "",
-        modelList: "",
+        markList: {
+            value : "",
+            name : ""
+        },
+        modelList: {
+            value : "",
+            name : ""
+        },
         yearFrom: "",
         yearTo: "",
         priceFrom: "",
         priceTo: "",
-        state: "",
-        sortType: ""
+        state: {
+            value : "",
+            name : ""
+        },
+        sortType: {
+            value : "",
+            name : ""
+        }
     })
 
     useEffect(() => {
         getMarks().then(setMarks);
         getStates().then(setStates);
-        setCollectionsList(getCollections());
+        setCollectionItemsList(getCollections());
     }, [])
 
     useEffect(() => {
-        if (filterValueObj.markList !== "") {
-            getModels(filterValueObj.markList).then(setModels);
+        if (filterValueObj.markList.value !== "") {
+            getModels(filterValueObj.markList.value).then(setModels);
         } else{
             setModels([])
         }
@@ -104,15 +116,34 @@ function App(props) {
         setQueryLine(createQueryLine(filterValueObj));
     }, [filterValueObj])
 
-
     function handleSelectionChange(event) {
         const target = event.target
         const name = target.name
         const value = target.value
+        const tagName = target.tagName.toLowerCase();
+
+        let valueObj;
+
+        switch (tagName) {
+            case "select":
+                valueObj = {
+                    [name]: {
+                        name : target.options[target.selectedIndex].text,
+                        value : value
+                    }
+                }
+                break;
+        
+            default:
+                valueObj = {
+                    [name]: value
+                }
+                break;
+        }
 
         setValueObj((list) => ({
             ...list,
-            [name]: value
+            ...valueObj
         }))
     }
     
@@ -134,9 +165,14 @@ function App(props) {
     
     
     function addToCollection() {
-        setCollectionsList(
-            setCollection(getCollectionItem(filterValueObj, createQueryLine(filterValueObj)))
+        setCollectionItemsList(
+            addCollectionItem(getCollectionItem(filterValueObj, createQueryLine(filterValueObj)))
         )
+    }
+
+    function removeItemFromCollection(id) {
+        let newCollection = removeCollectionItemById(id)
+        setCollectionItemsList(newCollection)
     }
 
     
@@ -162,6 +198,7 @@ function App(props) {
                     collectionsList.length > 0 ? (
                         <Collection
                             collectionsList = {collectionsList}
+                            removeItemFromCollection = {removeItemFromCollection}
                         />
                     ) : null
                 }
