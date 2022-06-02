@@ -5,7 +5,7 @@ import s from "./Collection.module.css";
 function Collection(props) {
     return(
         <Container addClass = "collection">
-            <h2>Коллекция</h2>
+            <h2>Коллекции</h2>
             <ul className="colection__items">
                 {
                     props.collectionsList.map(collectionItem=>(
@@ -13,6 +13,7 @@ function Collection(props) {
                             key = {collectionItem.id}
                             data = {collectionItem}
                             removeItemFromCollection = {props.removeItemFromCollection}
+                            searchByCollection = {props.searchByCollection}
                         />
                     ))
                 }

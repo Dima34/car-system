@@ -48,11 +48,9 @@ aside,.double-filter, label{
   gap: 40px;
 }
 
-
-
 .filter_footer{
   display: grid;
-  grid-template-columns: 50% 50%;
+  grid-template-columns: 1fr 1fr;
   gap: 5px;
 }
 
@@ -68,19 +66,3 @@ aside,.double-filter, label{
   margin-bottom: 15px;
 }
 
-.collection__card{
-  padding: 10px;
-  border: 1px solid;
-  border-radius: 5px;
-  position: relative;
-}
-
-.collection__card h3{
-  padding-right: 30px;
-}
-
-.collection__card button{
-  position: absolute;
-  right: 10px;
-  top: 10px;
-}

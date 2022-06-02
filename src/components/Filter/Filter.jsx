@@ -107,10 +107,9 @@ function Filter(props) {
                 />
             </label>    
             <div className="filter_footer">
-                <p>{props.queryLine.length}</p>
                 <button onClick={()=>props.makeSearch()}>Поиск</button>
-                <button id="search-by-collection">Поиск по коллекции</button>
-                <button onClick={()=>props.addToCollection()} disabled = {props.queryLine.length == 0 ? true : false} >Добавить в коллекцию</button>
+                <button id="search-by-collection">Поиск по коллекциям</button>
+                <button id="add-to-collection" onClick={()=>props.addToCollection()} disabled = {props.queryLine.length == 0 ? true : false} >Добавить в коллекцию</button>
             </div>
         </Container> 
     )

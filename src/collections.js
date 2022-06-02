@@ -78,7 +78,7 @@ function getCollectionItem(filterValueObject, queryLine) {
     }
   }
 
-  object["query_line"] = queryLine;
+  object["queryLine"] = queryLine;
 
   return object;
 }

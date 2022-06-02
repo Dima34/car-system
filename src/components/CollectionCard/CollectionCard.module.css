@@ -1,0 +1,36 @@
+.collection-card {
+    padding: 10px;
+    border: 1px solid;
+    border-radius: 5px;
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.collection-card fieldset{
+    margin: 0;
+}
+
+.collection-card > *{
+    margin-bottom: 5px !important;
+}
+
+.collection-card:last-child {
+    margin-bottom: 0;
+}
+
+.collection-card h3 {
+    padding-right: 30px;
+}
+
+.collection-card__delete {
+    position: absolute;
+    right: 11px;
+    top: 10px;
+}
+
+.collection-card__search{
+    display: block;
+    width: 100%;
+    padding: 3px;
+    box-sizing:border-box;
+}

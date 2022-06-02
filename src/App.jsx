@@ -148,9 +148,9 @@ function App(props) {
     }
     
 
-    async function makeSearch() {
+    async function makeSearch(queryToSearch) {
         setIsFetching(true)
-        let carIds = await getCarIdsByQuery(queryLine);
+        let carIds = await getCarIdsByQuery(queryToSearch);
         
         let carsById = [];
         for (let carId of carIds) {
@@ -161,7 +161,11 @@ function App(props) {
 
         setСarList(carsById);
         setIsFetching(false)
-    }   
+    }
+    
+    async function searchByCollection(queryToSearch) {
+        makeSearch(queryToSearch)
+    }
     
     
     function addToCollection() {
@@ -187,18 +191,16 @@ function App(props) {
                     sortTypeList={sortTypes}
                     handleSelectionChange={handleSelectionChange}
                     queryLine={queryLine}
-                    makeSearch={makeSearch}
+                    makeSearch={()=>makeSearch(queryLine)}
                     addToCollection = {addToCollection}
                 />
-
-
-                {/* No functionality yet */}
 
                 {
                     collectionsList.length > 0 ? (
                         <Collection
                             collectionsList = {collectionsList}
                             removeItemFromCollection = {removeItemFromCollection}
+                            searchByCollection = {searchByCollection}
                         />
                     ) : null
                 }
