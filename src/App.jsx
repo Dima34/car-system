@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import CarCard from "./components/CarCard/CarCard";
-import Collection from "./components/Collection/Collection";
+import Collection from "./components/Collections/Collections";
 import Filter from "./components/Filter/Filter";
 import MainGrid from "./components/MainGrid/MainGrid";
 import { getCarIdsByQuery, getCarById, getMarks, getStates, getModels, createQueryLine } from "./api.js";
@@ -14,6 +14,7 @@ function App(props) {
     const [states, setStates] = useState([])
     const [queryLine, setQueryLine] = useState("")
     const [carList, setСarList] = useState([])
+    const [collectionCardsData, setCollectionCardsData] = useState([])
     const [collectionsList, setCollectionItemsList] = useState([])
     const [isFetching, setIsFetching] = useState(false)
     const sortTypes = [
@@ -77,24 +78,24 @@ function App(props) {
 
     const [filterValueObj, setValueObj] = useState({
         markList: {
-            value : "",
-            name : ""
+            value: "",
+            name: ""
         },
         modelList: {
-            value : "",
-            name : ""
+            value: "",
+            name: ""
         },
         yearFrom: "",
         yearTo: "",
         priceFrom: "",
         priceTo: "",
         state: {
-            value : "",
-            name : ""
+            value: "",
+            name: ""
         },
         sortType: {
-            value : "",
-            name : ""
+            value: "",
+            name: ""
         }
     })
 
@@ -107,9 +108,17 @@ function App(props) {
     useEffect(() => {
         if (filterValueObj.markList.value !== "") {
             getModels(filterValueObj.markList.value).then(setModels);
-        } else{
+        } else {
             setModels([])
         }
+
+        setValueObj((current) => ({
+            ...current,
+            modelList: {
+                value: "",
+                name: ""
+            }
+        }))
     }, [filterValueObj.markList])
 
     useEffect(() => {
@@ -128,12 +137,12 @@ function App(props) {
             case "select":
                 valueObj = {
                     [name]: {
-                        name : target.options[target.selectedIndex].text,
-                        value : value
+                        name: target.options[target.selectedIndex].text,
+                        value: value
                     }
                 }
                 break;
-        
+
             default:
                 valueObj = {
                     [name]: value
@@ -146,12 +155,12 @@ function App(props) {
             ...valueObj
         }))
     }
-    
 
-    async function makeSearch(queryToSearch) {
-        setIsFetching(true)
+    async function getCarsByQuery(queryToSearch, maxLength = null) {
         let carIds = await getCarIdsByQuery(queryToSearch);
-        
+
+        if(maxLength) carIds = carIds.slice(0, maxLength)
+
         let carsById = [];
         for (let carId of carIds) {
             await getCarById(carId).then((car) => {
@@ -159,15 +168,138 @@ function App(props) {
             });
         }
 
-        setСarList(carsById);
+        return carsById
+    }
+
+    async function makeSearch(queryToSearch) {
+        setIsFetching(true)
+
+        let cars = await getCarsByQuery(queryToSearch);
+        setСarList(cars);
+
         setIsFetching(false)
     }
-    
+
+    function clearQueryLineFromParam(queryLine, paramName) {
+        let lineParams = new URLSearchParams(queryLine);
+
+        // lineParams.delete("price_ot[0]")
+        // lineParams.delete("price_do[0]")
+        lineParams.delete(paramName)
+
+        return ("&" + decodeURIComponent(lineParams.toString()));
+    }
+
+    function addParamToQueryLine(queryLine, paramName, paramValue) {
+        let lineParams = new URLSearchParams(queryLine);
+
+        lineParams.set(paramName, paramValue)
+
+        return ("&" + decodeURIComponent(lineParams.toString()));
+    }
+
+    // Search by all collections in one time
+    async function searchByCollections(params) {
+        setIsFetching(true)
+
+        // Clearing car list because we dont want to display car cards and collection cards in one time
+        //  when we making a collections search
+        setСarList([])
+
+        let collectionsCars = []
+
+        function addToObject(obj, name, value) {
+            obj[name] = value
+        }
+
+        for (let collectionItem of collectionsList) {
+            let collectionCardInfo = {}
+
+            for (const item in collectionItem) {
+                let value = collectionItem[item]
+
+                switch (item) {
+                    case "markaName":
+                    case "modelName":
+                    case "yearFrom":
+                    case "yearTo":
+                    case "priceFrom":
+                    case "priceTo":
+                    case "sortName":
+                    case "stateName":
+                        addToObject(collectionCardInfo, item, value)
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            // for cheaper and more expensive variants must be an asceding
+
+            // If price from set for current collection - search 3 cheaper variants
+            if(collectionCardInfo["priceFrom"]){
+                let priceFromValue = collectionItem["priceFrom"]
+               
+                // clear line from price values
+                let newQueryLine = clearQueryLineFromParam(collectionItem.queryLine, "price_ot[0]")
+                newQueryLine = clearQueryLineFromParam(collectionItem.queryLine, "price_do[0]")
+                
+                // add a price to attribute
+                newQueryLine =  addParamToQueryLine(newQueryLine, "price_do[0]", priceFromValue)
+
+                // remove sotring type if its exist
+                newQueryLine = clearQueryLineFromParam(collectionItem.queryLine, "order_by")
+
+                // add sotring type
+                newQueryLine = addParamToQueryLine(collectionItem.queryLine, "order_by", "2")
+
+                await getCarsByQuery(newQueryLine, 3).then((car) => {
+                    collectionCardInfo.cheaperQueryRes = car;
+                });
+            }
+
+            // Searching results which fit to query
+            await getCarsByQuery(collectionItem.queryLine).then((car) => {
+                collectionCardInfo.fitQueryRes = car;
+            });
+
+            // If price to set for current collection - search 3 more expensive variants
+            if(collectionCardInfo["priceTo"]){
+                let priceToValue = collectionItem["priceTo"]
+               
+                // clear line from price values
+                let newQueryLine = clearQueryLineFromParam(collectionItem.queryLine, "price_ot[0]")
+                newQueryLine = clearQueryLineFromParam(collectionItem.queryLine, "price_do[0]")
+
+                // add a price to attribute
+                newQueryLine =  addParamToQueryLine(newQueryLine, "price_ot[0]", priceToValue)
+
+                // remove sotring type if its exist
+                newQueryLine = clearQueryLineFromParam(collectionItem.queryLine, "order_by")
+
+                // add sotring type
+                newQueryLine = addParamToQueryLine(collectionItem.queryLine, "order_by", "2")
+                
+
+                await getCarsByQuery(newQueryLine, 3).then((car) => {
+                    collectionCardInfo.moreExpensiveQueryRes = car;
+                });
+            }
+
+            collectionsCars.push(collectionCardInfo)
+        }
+
+        console.log(collectionsCars);
+
+        setIsFetching(false)
+    }
+
+    // Search by single collection
     async function searchByCollection(queryToSearch) {
         makeSearch(queryToSearch)
     }
-    
-    
+
+
     function addToCollection() {
         setCollectionItemsList(
             addCollectionItem(getCollectionItem(filterValueObj, createQueryLine(filterValueObj)))
@@ -179,7 +311,6 @@ function App(props) {
         setCollectionItemsList(newCollection)
     }
 
-    
     return (
         <div className="wrapper">
             <aside>
@@ -191,20 +322,22 @@ function App(props) {
                     sortTypeList={sortTypes}
                     handleSelectionChange={handleSelectionChange}
                     queryLine={queryLine}
-                    makeSearch={()=>makeSearch(queryLine)}
-                    addToCollection = {addToCollection}
+                    makeSearch={() => makeSearch(queryLine)}
+                    addToCollection={addToCollection}
+                    collectionsList={collectionsList}
+                    searchByCollections={searchByCollections}
                 />
 
                 {
                     collectionsList.length > 0 ? (
                         <Collection
-                            collectionsList = {collectionsList}
-                            removeItemFromCollection = {removeItemFromCollection}
-                            searchByCollection = {searchByCollection}
+                            collectionsList={collectionsList}
+                            removeItemFromCollection={removeItemFromCollection}
+                            searchByCollection={searchByCollection}
                         />
                     ) : null
                 }
-                
+
             </aside>
             <main>
                 {

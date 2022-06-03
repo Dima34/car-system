@@ -1,6 +1,6 @@
-import CollectionCard from "../CollectionCard/CollectionCard";
+import CollectionsCard from "../CollectionsCard/CollectionsCard";
 import Container from "../Container/Container";
-import s from "./Collection.module.css";
+import s from "./Collections.module.css";
 
 function Collection(props) {
     return(
@@ -9,7 +9,7 @@ function Collection(props) {
             <ul className="colection__items">
                 {
                     props.collectionsList.map(collectionItem=>(
-                        <CollectionCard 
+                        <CollectionsCard 
                             key = {collectionItem.id}
                             data = {collectionItem}
                             removeItemFromCollection = {props.removeItemFromCollection}
