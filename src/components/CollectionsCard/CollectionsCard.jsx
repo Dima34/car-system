@@ -13,8 +13,8 @@ export default function CollectionCard(props) {
     const sort = item.sortName
 
     return(
-        <li className={s["collection-card"]}>
-            <h3>
+        <div className={s["collection-card"]}>
+<h3>
                 {marka} {model}
             </h3>
 
@@ -63,6 +63,6 @@ export default function CollectionCard(props) {
             <button className={s["collection-card__delete"]} onClick={()=>props.removeItemFromCollection(item.id)}>
                 X
             </button>
-        </li>
+        </div>            
     )
 }

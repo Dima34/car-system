@@ -1,0 +1,41 @@
+.dropdown{
+    display: grid;
+    grid-template-rows: 1fr;
+}
+
+.dropdown.opened{
+    gap: 10px;
+}
+
+.dropdownButton{
+    padding-right: 25px;
+    position: relative;
+    text-align: left;
+}
+
+.dropdownButton::after{
+    content: "";
+    width: 8px;
+    height: 8px;
+    position: absolute;
+    right: 10px;
+    border:  2px solid black;
+    border-top: 0;
+    border-right: 0;
+    top: 40%;
+    transform: rotate(-45deg);
+}
+
+.opened .dropdownButton::after{
+    top: 45%;
+    transform: rotate(135deg);
+}
+
+.dropdownContainer{
+    max-height: 0;
+    overflow: hidden;
+}
+
+.opened .dropdownContainer{
+    max-height: unset;
+}

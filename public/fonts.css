@@ -1,0 +1,89 @@
+/* inter-regular - latin_cyrillic */
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    src: local(''),
+        url('fonts/inter-v11-latin_cyrillic-regular.woff2') format('woff2');
+}
+
+/* inter-500 - latin_cyrillic */
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    src: local(''),
+        url('fonts/inter-v11-latin_cyrillic-500.woff2') format('woff2');
+}
+
+/* inter-600 - latin_cyrillic */
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    src: local(''),
+        url('fonts/inter-v11-latin_cyrillic-600.woff2') format('woff2');
+}
+
+/* inter-700 - latin_cyrillic */
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    src: local(''),
+        url('fonts/inter-v11-latin_cyrillic-700.woff2') format('woff2');
+}
+
+/* inter-800 - latin_cyrillic */
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 800;
+    src: local(''),
+        url('fonts/inter-v11-latin_cyrillic-800.woff2') format('woff2');
+}
+
+.h1{
+    font-size: 24px;
+}
+
+.h2{
+    font-size: 20px;
+}
+
+.h3{
+    font-size: 18px;
+}
+
+.fw-800 {
+    font-weight: 800;
+}
+
+.fw-700 {
+    font-weight: 700;
+}
+
+.fw-600 {
+    font-weight: 600;
+}
+
+.fw-500 {
+    font-weight: 500;
+}
+
+.fw-400 {
+    font-weight: 400;
+}
+
+label, select, input, button{
+    font-size: 16px;
+}
+
+p,.p{
+    font-size: 16px;
+}
+
+button{
+    font-weight: 600;
+    padding: 5px;
+}

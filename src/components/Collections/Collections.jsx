@@ -6,15 +6,16 @@ function Collection(props) {
     return(
         <Container addClass = "collection">
             <h2>Коллекции</h2>
-            <ul className="colection__items">
+            <ul className={s.colection__items}>
                 {
                     props.collectionsList.map(collectionItem=>(
-                        <CollectionsCard 
-                            key = {collectionItem.id}
-                            data = {collectionItem}
-                            removeItemFromCollection = {props.removeItemFromCollection}
-                            searchByCollection = {props.searchByCollection}
-                        />
+                        <li key = {collectionItem.id}>
+                            <CollectionsCard 
+                                data = {collectionItem}
+                                removeItemFromCollection = {props.removeItemFromCollection}
+                                searchByCollection = {props.searchByCollection}
+                            />
+                        </li>                        
                     ))
                 }
             </ul>

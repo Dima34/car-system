@@ -5,6 +5,7 @@ import Filter from "./components/Filter/Filter";
 import MainGrid from "./components/MainGrid/MainGrid";
 import { getCarIdsByQuery, getCarById, getMarks, getStates, getModels, createQueryLine } from "./api.js";
 import { getCollectionItem, getCollections, removeCollectionItemById, addCollectionItem } from "./collections";
+import CollectionCard from "./components/CollectionCard/CollectionCard";
 
 
 
@@ -14,7 +15,7 @@ function App(props) {
     const [states, setStates] = useState([])
     const [queryLine, setQueryLine] = useState("")
     const [carList, setСarList] = useState([])
-    const [collectionCardsData, setCollectionCardsData] = useState([])
+    const [collectionCardList, setCollectionCardList] = useState([])
     const [collectionsList, setCollectionItemsList] = useState([])
     const [isFetching, setIsFetching] = useState(false)
     const sortTypes = [
@@ -172,6 +173,7 @@ function App(props) {
     }
 
     async function makeSearch(queryToSearch) {
+        setCollectionCardList([])
         setIsFetching(true)
 
         let cars = await getCarsByQuery(queryToSearch);
@@ -259,7 +261,7 @@ function App(props) {
             }
 
             // Searching results which fit to query
-            await getCarsByQuery(collectionItem.queryLine).then((car) => {
+            await getCarsByQuery(collectionItem.queryLine, 5).then((car) => {
                 collectionCardInfo.fitQueryRes = car;
             });
 
@@ -289,7 +291,7 @@ function App(props) {
             collectionsCars.push(collectionCardInfo)
         }
 
-        console.log(collectionsCars);
+        setCollectionCardList(collectionsCars);
 
         setIsFetching(false)
     }
@@ -343,8 +345,12 @@ function App(props) {
                 {
                     isFetching ? <h1>Загрузка...</h1> : (
                         <MainGrid>
+                            
                             {carList.map((car) => (
                                 <CarCard car={car} />
+                            ))}
+                            {collectionCardList.map((cardInfo) => (
+                                <CollectionCard data = {cardInfo}/>
                             ))}
                         </MainGrid>
                     )
