@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import CollectionCardPlug from "../CollectionCardPlug/CollectionCardPlug";
 import Container from "../Container/Container"
 import DropDown from "../DropDown/DropDown";
@@ -60,7 +61,9 @@ export default function CollectionCard(props) {
                         <ul className={s.CollectionCardList}>
                             {data.cheaperQueryRes.map(item=>(
                                 <li key={item.id}>
-                                    <CollectionCardPlug carInfo = {item} />
+                                    <Link to = {"/"+ item.autoData.autoId}>
+                                        <CollectionCardPlug carInfo = {item} />
+                                    </Link>
                                 </li>
                             ))}
                         </ul>
@@ -74,7 +77,9 @@ export default function CollectionCard(props) {
                         <ul className={s.CollectionCardList}>
                             {data.fitQueryRes.map(item=>(
                                 <li key={item.id}>
-                                    <CollectionCardPlug carInfo = {item} />
+                                    <Link to = {"/"+ item.autoData.autoId}>
+                                        <CollectionCardPlug carInfo = {item} />
+                                    </Link>
                                 </li>
                             ))}
                         </ul>
@@ -90,7 +95,9 @@ export default function CollectionCard(props) {
                         <ul className={s.CollectionCardList}>
                             {data.moreExpensiveQueryRes.map(item=>(
                                 <li key={item.id}>
-                                    <CollectionCardPlug carInfo = {item} />
+                                    <Link to = {"/"+ item.autoData.autoId}>
+                                        <CollectionCardPlug carInfo = {item} />
+                                    </Link>
                                 </li>
                             ))}
                         </ul>
