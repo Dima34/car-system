@@ -1,4 +1,4 @@
-import { Route, Routes, useParams } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Car from "./routes/Car";
 import Main from "./routes/Main";
 

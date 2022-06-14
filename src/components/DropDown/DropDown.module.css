@@ -11,24 +11,23 @@
     padding-right: 25px;
     position: relative;
     text-align: left;
+    width: fit-content;
 }
 
 .dropdownButton::after{
     content: "";
-    width: 8px;
-    height: 8px;
+    background: url("../../icons/dropdown-arrow.svg") center no-repeat;
+    background-size: cover;
+    width: 12px;
+    height: 12px;
     position: absolute;
     right: 10px;
-    border:  2px solid black;
-    border-top: 0;
-    border-right: 0;
-    top: 40%;
-    transform: rotate(-45deg);
+    top: 50%;
+    transform: rotate(-180deg);
 }
 
 .opened .dropdownButton::after{
-    top: 45%;
-    transform: rotate(135deg);
+    transform: rotate(0deg);
 }
 
 .dropdownContainer{

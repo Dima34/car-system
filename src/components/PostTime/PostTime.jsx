@@ -3,7 +3,6 @@ import clockGreen from "../../icons/clock-green.svg"
 
 function setSuffix(num, root, suffixWhen1, suffixLess5, suffixMore4 = "") {
     let lastNumDigit = Number(num.toString().split("").slice(-1).join());
-
     let suffix = ""
 
     if(num > 10 && num < 15){
@@ -16,8 +15,6 @@ function setSuffix(num, root, suffixWhen1, suffixLess5, suffixMore4 = "") {
         suffix = suffixLess5
     }
     else {suffix = suffixMore4}
-
-    console.log(`${lastNumDigit} ${root}${suffix}`);
 
     return `${root}${suffix}`
 }

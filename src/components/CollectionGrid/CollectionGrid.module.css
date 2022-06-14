@@ -1,5 +1,5 @@
-.collectionCard{
+.collectionGrid{
     display: grid;
     grid-template-rows: 1fr;
-    row-gap: 10px;
+    row-gap: 20px;
 }
