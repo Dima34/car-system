@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom"
-import { getCarById } from "../api";
+import { getCarById } from "../API";
 
 export default function Car(props) {
     const [carInfo, setCarInfo] = useState({})

@@ -3,10 +3,12 @@ import CarCard from "../components/CarCard/CarCard";
 import Collection from "../components/Collections/Collections";
 import Filter from "../components/Filter/Filter";
 import MainGrid from "../components/MainGrid/MainGrid";
-import { getCarIdsByQuery, getCarById, getMarks, getStates, getModels, createQueryLine } from "../api.js";
+import { getCarIdsByQuery, getCarById, getMarks, getStates, getModels, createQueryLine } from "../API.js";
 import { getCollectionItem, getCollections, removeCollectionItemById, addCollectionItem } from "../collections";
 import CollectionCard from "../components/CollectionCard/CollectionCard";
-import { Link } from "react-router-dom";
+import Container from "../components/Container/Container";
+
+
 
 export default function Main(props) {
     const [marks, setMarks] = useState([])
@@ -314,7 +316,7 @@ export default function Main(props) {
     
 
     return (
-        <div className="wrapper">
+        <div className="wrapper main-container">
             <aside>
                 <Filter
                     valueList={filterValueObj}
@@ -344,18 +346,20 @@ export default function Main(props) {
             <main>
                 {
                     isFetching ? <h1>Загрузка...</h1> : (
-                        <MainGrid>
-                            {carList.map((car) => (
-                                <Link to={"/"+car.autoData.autoId} key={car.secureKey}>
-                                    <CarCard car={car} />
-                                </Link>
-                            ))}
-                            {collectionCardList.map((cardInfo) => (
-                                <CollectionCard key={cardInfo.secureKey} data = {cardInfo}/>
-                            ))}
-                        </MainGrid>
+                        <Container>
+                            <MainGrid>
+                                {carList.map((car) => (
+                                    <CarCard car={car} key={car.secureKey}/>
+                                ))}
+
+                                {collectionCardList.map((cardInfo) => (
+                                    <CollectionCard key={cardInfo.secureKey} data = {cardInfo}/>
+                                ))}
+                            </MainGrid>
+                        </Container>
                     )
                 }
+                
             </main>
 
         </div>

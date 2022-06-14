@@ -43,16 +43,16 @@
         url('fonts/inter-v11-latin_cyrillic-800.woff2') format('woff2');
 }
 
-.h1{
-    font-size: 24px;
-}
-
-.h2{
-    font-size: 20px;
-}
-
-.h3{
-    font-size: 18px;
+h2,
+h1,
+h3,
+p,
+li,
+ul,
+label,
+select,
+button {
+    font-family: 'Inter';
 }
 
 .fw-800 {
@@ -75,15 +75,40 @@
     font-weight: 400;
 }
 
-label, select, input, button{
-    font-size: 16px;
+:root {
+    --h1: 800 24px / 100% 'Inter';
+    --h2: 800 20px / 100% 'Inter';
+    --medium: 400 18px / 100% 'Inter';
+    --p: 400 16px / 100% 'Inter';
 }
 
-p,.p{
-    font-size: 16px;
+h1,
+.h1 {
+    font: var(--h1);
 }
 
-button{
-    font-weight: 600;
-    padding: 5px;
+h2,
+.h2 {
+    font: var(--h2);
+}
+
+.medium {
+    font: var(--medium);
+}
+
+p,
+.p {
+    font: var(--p);
+}
+
+label,
+select,
+input,
+button {
+    font: var(--p);
+}
+
+
+button {
+    font: var(--h2);
 }

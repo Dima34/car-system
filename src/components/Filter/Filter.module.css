@@ -1,0 +1,15 @@
+.filter{
+    display: grid;
+    grid-template-rows: 1fr;
+    row-gap: 10px;
+}
+
+.double-filter{
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: 10px;
+}
+
+.double-filter input{
+    width: 100%;
+}

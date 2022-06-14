@@ -1,0 +1,19 @@
+h2,
+h1,
+h3,
+p,
+li,
+ul,
+label,
+select {
+    padding: 0;
+    margin: 0;
+}
+
+ul {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+}

@@ -32,8 +32,8 @@ function InputNumber(props) {
 function Filter(props) {
 
     return(
-        <Container addClass = "filter">
-            <h2>Фильтр</h2>
+        <Container addClass = {s.filter}>
+            <h1>Фильтр</h1>
             <label htmlFor="markList">
                 Марка
                 <Select 
@@ -52,7 +52,7 @@ function Filter(props) {
                     handleChange={props.handleSelectionChange} 
                 />
             </label>            
-            <div className="double-filter">
+            <div className={s["double-filter"]}>
                 <label htmlFor="yearFrom">
                     Год от
                     <InputNumber 
@@ -70,7 +70,7 @@ function Filter(props) {
                     />
                 </label>
             </div>
-            <div className="double-filter">
+            <div className={s["double-filter"]}>
                 <label htmlFor="price_from">
                     Цена от
                     <InputNumber 
@@ -106,11 +106,10 @@ function Filter(props) {
                     handleChange={props.handleSelectionChange} 
                 />
             </label>    
-            <div className="filter_footer">
-                <button onClick = {()=>props.makeSearch()}>Поиск</button>
-                <button onClick = {()=>props.searchByCollections()} disabled = {props.collectionsList.length == 0 ? true : false}>Поиск по коллекциям</button>
-                <button id="add-to-collection" onClick={()=>props.addToCollection()} disabled = {props.queryLine.length == 0 ? true : false} >Добавить в коллекцию</button>
-            </div>
+            <div className="spacer-10"></div>
+            <button className="button" onClick = {()=>props.makeSearch()}>Поиск</button>
+            <button className="button" onClick = {()=>props.searchByCollections()} disabled = {props.collectionsList.length == 0 ? true : false}>Поиск по коллекциям</button>
+            <button className="button" onClick={()=>props.addToCollection()} disabled = {props.queryLine.length == 0 ? true : false} >Добавить в коллекцию</button>
         </Container> 
     )
 }
