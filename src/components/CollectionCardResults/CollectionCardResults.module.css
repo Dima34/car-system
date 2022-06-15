@@ -1,0 +1,16 @@
+.collectionCardContainer{
+    display: grid;
+    grid-template-rows: min-content min-content;
+    row-gap: 10px;
+}
+
+.collectionCardList{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+}
+
+.collectionCardSearchAll{
+    display: flex;
+    justify-content: flex-end;
+}

@@ -1,0 +1,9 @@
+.collections{
+    display: grid;
+    row-gap: 20px;
+}
+
+.colectionItems{
+    display: grid;
+    row-gap: 10px;
+}

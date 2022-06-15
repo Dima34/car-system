@@ -1,8 +1,5 @@
-import { Link } from "react-router-dom";
-import CollectionCardPlug from "../CollectionCardPlug/CollectionCardPlug";
 import CollectionCardResults from "../CollectionCardResults/CollectionCardResults";
 import Container from "../Container/Container"
-import DropDown from "../DropDown/DropDown";
 import s from "./CollectionCard.module.css"
 
 
@@ -15,7 +12,7 @@ export default function CollectionCard(props) {
             {
                 data.markaName || 
                 data.modelName ? (
-                    <h2 className="h1">
+                    <h2 className="h1 gray">
                         {data.markaName} {data.modelName}
                     </h2>
                 ) : null
@@ -67,7 +64,9 @@ export default function CollectionCard(props) {
                 (data.cheaperQueryRes ? data.cheaperQueryRes.length !== 0 : false) ? (
                     <CollectionCardResults 
                         carList = {data.cheaperQueryRes}
-                        title = {`Дешевле`}
+                        title = {`Дешевле (${data.cheaperQuantity})`}
+                        makeSearch = {props.makeSearch}
+                        searchQuery = {data.cheaperQueryLine}
                     />
                 ) : null
             }
@@ -78,8 +77,10 @@ export default function CollectionCard(props) {
                 data.fitQueryRes.length !== 0 ? (
                     <CollectionCardResults 
                         carList = {data.fitQueryRes}
-                        title = {`Результаты поиска (${data.fitQueryRes.length})`}
+                        title = {`Результаты поиска (${data.fitQuantity})`}
                         isOpened = {true}
+                        makeSearch = {props.makeSearch}
+                        searchQuery = {data.fitQueryLine}
                     />
                 ) : (
                     <h3>Нет результатов</h3>
@@ -90,17 +91,12 @@ export default function CollectionCard(props) {
 
             {
                 (data.moreExpensiveQueryRes ? data.moreExpensiveQueryRes.length !== 0 : false) ? (
-                    <DropDown title={`Дороже`}>
-                        <ul className={s.CollectionCardList}>
-                            {data.moreExpensiveQueryRes.map(item=>(
-                                <li key={item.id}>
-                                    <Link to = {"/"+ item.autoData.autoId}>
-                                        <CollectionCardPlug carInfo = {item} />
-                                    </Link>
-                                </li>
-                            ))}
-                        </ul>
-                    </DropDown>
+                    <CollectionCardResults 
+                    carList = {data.moreExpensiveQueryRes}
+                    title = {`Дороже (${data.moreExpensiveQuantity})`}
+                    makeSearch = {props.makeSearch}
+                    searchQuery = {data.moreExpensiveQueryLine}
+                    />
                 ) : null
             }            
         </Container>

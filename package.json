@@ -14,7 +14,8 @@
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
     "redux": "^4.2.0",
-    "sass": "^1.52.3"
+    "sass": "^1.52.3",
+    "swiper": "^8.2.4"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -55,26 +55,6 @@ button {
     font-family: 'Inter';
 }
 
-.fw-800 {
-    font-weight: 800;
-}
-
-.fw-700 {
-    font-weight: 700;
-}
-
-.fw-600 {
-    font-weight: 600;
-}
-
-.fw-500 {
-    font-weight: 500;
-}
-
-.fw-400 {
-    font-weight: 400;
-}
-
 :root {
     --h1: 800 24px / 100% 'Inter';
     --h2: 800 20px / 100% 'Inter';
@@ -99,6 +79,26 @@ h2,
 p,
 .p {
     font: var(--p);
+}
+
+.fw-800 {
+    font-weight: 800;
+}
+
+.fw-700 {
+    font-weight: 700;
+}
+
+.fw-600 {
+    font-weight: 600;
+}
+
+.fw-500 {
+    font-weight: 500;
+}
+
+.fw-400 {
+    font-weight: 400;
 }
 
 label,

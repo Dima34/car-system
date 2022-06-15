@@ -4,9 +4,9 @@ import s from "./Collections.module.css";
 
 function Collection(props) {
     return(
-        <Container addClass = "collection">
-            <h2>Коллекции</h2>
-            <ul className={s.colection__items}>
+        <Container addClass = {s.collections}>
+            <h2 className="h1 gray">Коллекции</h2>
+            <ul className={s.colectionItems}>
                 {
                     props.collectionsList.map(collectionItem=>(
                         <li key = {collectionItem.id}>

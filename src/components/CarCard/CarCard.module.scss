@@ -1,7 +1,9 @@
 .card{
     display: grid;
-    grid-template-rows: min-content;
+    grid-template-rows: min-content 1fr repeat(5, min-content);
     row-gap: 10px;
+    height: 100%;
+    box-sizing: border-box;
 }
 
 .main-image{
@@ -26,5 +28,6 @@
     grid-template-columns: min-content 1fr;
     align-items: center;
     gap: 10px;
+    height: fit-content;
 }
   

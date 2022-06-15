@@ -10,6 +10,7 @@ import {
   getStates,
   getModels,
   createQueryLine,
+  makeSearchQuery,
 } from "../API.js";
 import {
   getCollectionItem,
@@ -186,6 +187,7 @@ export default function Main(props) {
   }
 
   async function makeSearch(queryToSearch) {
+    console.log(`Query to search - `, queryToSearch);
     setCollectionCardList([]);
     setIsFetching(true);
 
@@ -205,12 +207,21 @@ export default function Main(props) {
     return "&" + decodeURIComponent(lineParams.toString());
   }
 
+  async function getAllQueryCarResults(query) {
+    return (await makeSearchQuery(query)).data.result.search_result.count
+  }
+
   function addParamToQueryLine(queryLine, paramName, paramValue) {
     let lineParams = new URLSearchParams(queryLine);
 
     lineParams.set(paramName, paramValue);
 
-    return "&" + decodeURIComponent(lineParams.toString());
+    let newParamLine = "&" + decodeURIComponent(lineParams.toString())
+
+    // console.log(`\nold line - `,queryLine);
+    // console.log(`new line - `,newParamLine);
+
+    return newParamLine;
   }
 
   // Search by all collections in one time
@@ -261,7 +272,7 @@ export default function Main(props) {
           "price_ot[0]"
         );
         newQueryLine = clearQueryLineFromParam(
-          collectionItem.queryLine,
+          newQueryLine,
           "price_do[0]"
         );
 
@@ -274,26 +285,32 @@ export default function Main(props) {
 
         // remove sotring type if its exist
         newQueryLine = clearQueryLineFromParam(
-          collectionItem.queryLine,
+          newQueryLine,
           "order_by"
         );
 
-        // add sotring type
+        // add  sotring type
         newQueryLine = addParamToQueryLine(
-          collectionItem.queryLine,
+          newQueryLine,
           "order_by",
-          "2"
+          "3"
         );
 
-        await getCarsByQuery(newQueryLine, 3).then((car) => {
+        collectionCardInfo.cheaperQuantity = await getAllQueryCarResults(newQueryLine)
+        collectionCardInfo.cheaperQueryLine = newQueryLine
+
+        await getCarsByQuery(newQueryLine, 6).then((car) => {
           collectionCardInfo.cheaperQueryRes = car;
         });
       }
 
       // Searching results which fit to query
-      await getCarsByQuery(collectionItem.queryLine, 5).then((car) => {
+      await getCarsByQuery(collectionItem.queryLine, 6).then((car) => {
         collectionCardInfo.fitQueryRes = car;
       });
+
+      collectionCardInfo.fitQuantity = await getAllQueryCarResults(collectionItem.queryLine)
+      collectionCardInfo.fitQueryLine = collectionItem.queryLine
 
       // If price to set for current collection - search 3 more expensive variants
       if (collectionCardInfo["priceTo"]) {
@@ -305,7 +322,7 @@ export default function Main(props) {
           "price_ot[0]"
         );
         newQueryLine = clearQueryLineFromParam(
-          collectionItem.queryLine,
+          newQueryLine,
           "price_do[0]"
         );
 
@@ -318,18 +335,21 @@ export default function Main(props) {
 
         // remove sotring type if its exist
         newQueryLine = clearQueryLineFromParam(
-          collectionItem.queryLine,
+          newQueryLine,
           "order_by"
         );
 
         // add sotring type
         newQueryLine = addParamToQueryLine(
-          collectionItem.queryLine,
+          newQueryLine,
           "order_by",
           "2"
         );
 
-        await getCarsByQuery(newQueryLine, 3).then((car) => {
+        collectionCardInfo.moreExpensiveQuantity = await getAllQueryCarResults(newQueryLine)
+        collectionCardInfo.moreExpensiveQueryLine = newQueryLine
+
+        await getCarsByQuery(newQueryLine,6).then((car) => {
           collectionCardInfo.moreExpensiveQueryRes = car;
         });
       }
@@ -401,7 +421,7 @@ export default function Main(props) {
             {collectionCardList.length > 0 ? (
               <CollectionGrid>
                 {collectionCardList.map((cardInfo) => (
-                  <CollectionCard key={cardInfo.secureKey} data={cardInfo} />
+                  <CollectionCard makeSearch = {makeSearch} key={cardInfo.secureKey} data={cardInfo} />
                 ))}
               </CollectionGrid>
             ) : null}

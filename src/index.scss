@@ -6,6 +6,11 @@ $gray: #414042;
 $black: #000000;
 $white: #fff;
 
+
+body{
+  margin: 0;
+}
+
 .green{
   color: $green;
 }
@@ -22,6 +27,8 @@ h1{
   max-width: 1210px;
   padding: 10px;
   margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .main-container{
@@ -161,4 +168,10 @@ input{
     text-decoration: underline;
     outline: none;
   }
+}
+
+aside{
+  display: grid;
+  grid-template-rows: min-content min-content;
+  gap: 20px;
 }

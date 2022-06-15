@@ -12,9 +12,13 @@ const infoURL = RiaURL + "/info" + APIKeyLine;
 const statesURL = RiaURL + "/states" + APIKeyLine;
 
 async function getCarIdsByQuery(queryLine) {
-  return makeRequest(searchURL + queryLine).then(
+  return await makeSearchQuery(queryLine).then(
     (res) => res.data.result.search_result.ids
   );
+}
+
+async function makeSearchQuery(queryLine) {
+  return makeRequest(searchURL + queryLine)
 }
 
 function getCarById(id) {
@@ -93,4 +97,5 @@ export {
   getStates,
   getModels,
   createQueryLine,
+  makeSearchQuery
 };
