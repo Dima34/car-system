@@ -22,7 +22,7 @@ import CollectionCard from "../components/CollectionCard/CollectionCard";
 import Container from "../components/Container/Container";
 import CollectionGrid from "../components/CollectionGrid/CollectionGrid";
 
-export default function Main(props) {
+export default function MainPage(props) {
   const [marks, setMarks] = useState([]);
   const [models, setModels] = useState([]);
   const [states, setStates] = useState([]);
