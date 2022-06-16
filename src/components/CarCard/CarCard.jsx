@@ -15,7 +15,7 @@ function priceFilter(priceLine) {
         newLine += char;
 
         if ((index + 1) % 3 === 0) {
-            newLine += " "
+            newLine += "\u00A0"
         }
     });
 

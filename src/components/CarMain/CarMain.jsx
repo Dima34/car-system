@@ -5,15 +5,11 @@ import { Swiper, SwiperSlide } from "swiper/react";
 
 // Import Swiper styles
 import "swiper/css";
-
-function getImageLink(exampleLink, id) {
-    const regexp = /__\d*/gm
-    return exampleLink.replace(regexp, `__${id}`)
-}
+import "swiper/css/navigation";
+import { Navigation } from "swiper";
 
 function CarMain(props){
     let car = props.car
-
     let mainImageUrl = car.photoData.seoLinkF;
 
     return(
@@ -53,22 +49,43 @@ function CarMain(props){
             </div>
             <div>
                 <Container addClass = {s.galleryContainer}>
-                <Swiper className="mySwiper">
+                <Swiper 
+                navigation={true} modules={[Navigation]} 
+                className={s.slider}>
                     {
                         car.photoData.all.map(id=>(
-                            <SwiperSlide>
+                            <SwiperSlide key = {id} className="slide">
                                 <img src={getImageLink(mainImageUrl, id)} />
                             </SwiperSlide> 
                         ))
                     }
                 </Swiper>
-                
-                </Container>        
+                {/* <div className={s.galleryThumbs}>
+                    {
+                        car.photoData.all.map(id=>(
+                            <button onClick={()=>{
+                                setSwiper(
+                                    ...swiper,
+                                    {activeIndex: 5}
+                                )
+                            }} className={s.galleryThumbItem}>
+                                <img src={getImageLink(mainImageUrl, id)} />
+                            </button> 
+                        ))
+                    }
+                </div> */}
+                </Container>     
             </div>
             
             
         </div>
     )
+}
+
+
+function getImageLink(exampleLink, id) {
+    const regexp = /__\d*/gm
+    return exampleLink.replace(regexp, `__${id}`)
 }
 
 export default CarMain
