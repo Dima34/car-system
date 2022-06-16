@@ -27,8 +27,8 @@ export default function Main(props) {
   const [models, setModels] = useState([]);
   const [states, setStates] = useState([]);
   const [queryLine, setQueryLine] = useState("");
-  const [carList, setСarList] = useState([]);
-  const [collectionCardList, setCollectionCardList] = useState([]);
+  const [carList, setСarList] = useState(null);
+  const [collectionCardList, setCollectionCardList] = useState(null);
   const [collectionsList, setCollectionItemsList] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
   const sortTypes = [
@@ -188,7 +188,7 @@ export default function Main(props) {
 
   async function makeSearch(queryToSearch) {
     console.log(`Query to search - `, queryToSearch);
-    setCollectionCardList([]);
+    setCollectionCardList(null);
     setIsFetching(true);
 
     let cars = await getCarsByQuery(queryToSearch);
@@ -230,7 +230,7 @@ export default function Main(props) {
 
     // Clearing car list because we dont want to display car cards and collection cards in one time
     //  when we making a collections search
-    setСarList([]);
+    setСarList(null);
 
     let collectionsCars = [];
 
@@ -410,15 +410,16 @@ export default function Main(props) {
           <h1>Загрузка...</h1>
         ) : (
           <Container>
-            {carList.length > 0 ? (
+            {carList != null ? 
+              carList.length > 0 ? (
               <MainGrid>
                 {carList.map((car) => (
                   <CarCard car={car} key={car.secureKey} />
                 ))}
               </MainGrid>
-            ) : null}
+            ) : <h1>Нету результатов. Попробуйте изменить поисковой запрос</h1> : null}
 
-            {collectionCardList.length > 0 ? (
+            {collectionCardList != null ? (
               <CollectionGrid>
                 {collectionCardList.map((cardInfo) => (
                   <CollectionCard makeSearch = {makeSearch} key={cardInfo.secureKey} data={cardInfo} />

@@ -83,7 +83,7 @@ export default function CollectionCard(props) {
                         searchQuery = {data.fitQueryLine}
                     />
                 ) : (
-                    <h3>Нет результатов</h3>
+                    <h2>Нет результатов</h2>
                 )
             }
 
