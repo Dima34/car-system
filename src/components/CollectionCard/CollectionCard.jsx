@@ -37,6 +37,8 @@ export default function CollectionCard(props) {
                 data.yearTo ? (
                     <p className="h2">
                         Год: &nbsp;
+                        {(data.yearFrom && !data.yearTo) ? "От " : null}
+                        {(data.yearTo && !data.yearFrom) ? "До " : null}
                         {data.yearFrom}
                         {data.yearFrom && data.yearTo ? "-" : null}
                         {data.yearTo}

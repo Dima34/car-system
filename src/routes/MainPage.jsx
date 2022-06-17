@@ -21,7 +21,7 @@ import {
 import CollectionCard from "../components/CollectionCard/CollectionCard";
 import Container from "../components/Container/Container";
 import CollectionGrid from "../components/CollectionGrid/CollectionGrid";
-import { addParamToQueryLine } from "../queryLineHandlers";
+import { addParamToQueryLine, getParamFromQueryLine } from "../queryLineHandlers";
 import { Link } from "react-router-dom";
 
 export default function MainPage(props) {
@@ -183,7 +183,7 @@ export default function MainPage(props) {
     return Math.ceil(resultObj.count / resAmount);
   }
 
-  async function setPaginationByQuery(queryToSearch) {
+  async function getPaginationListByQuery(queryToSearch) {
     let pagesAmount = await getPagesByQuery(queryToSearch);
 
     let paginationArr = [];
@@ -199,13 +199,23 @@ export default function MainPage(props) {
       paginationArr.push(paginationItem);
     }
 
-    console.log(`set pagination...`);
-
-    setPaginationPages(paginationArr);
+    return paginationArr;
   }
 
   async function handlePagination(queryToSearch) {
-    await setPaginationByQuery(queryToSearch);
+    let newPaginationList = await getPaginationListByQuery(queryToSearch);
+
+    let activePage = getParamFromQueryLine(queryToSearch, "page");
+
+    if(activePage === null){
+      newPaginationList[0].active = true;
+    } else{
+      newPaginationList[activePage].active = true;
+    }
+    
+    setPaginationPages(newPaginationList);
+
+    console.log(`param name - `,newPaginationList);
   }
 
   async function makeSearch(queryToSearch) {
@@ -233,6 +243,7 @@ export default function MainPage(props) {
     // Clear car list because we dont want to display car cards and collection cards in one time
     //  when we making a collections search
     setСarList(null);
+    setPaginationPages([])
 
     setCollectionCardList(await getCollectionCardList(collectionsList));
 
@@ -317,7 +328,7 @@ export default function MainPage(props) {
                 <ul>
                   {paginationPages.slice(0,10).map((el, id) => (
                     <li key={id}>
-                      <button onClick={() => makeSearch(el.pageQuery)}>
+                      <button style={el.active ? {"color":"red"} : null} onClick={() => makeSearch(el.pageQuery)}>
                         {el.pagenum}
                       </button>
                     </li>

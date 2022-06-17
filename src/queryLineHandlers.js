@@ -16,7 +16,15 @@ function addParamToQueryLine(queryLine, paramName, paramValue) {
     return newParamLine;
 }
 
+function getParamFromQueryLine(queryLine, paramName) {
+    let lineParams = new URLSearchParams(queryLine);
+
+
+    return lineParams.get(paramName)
+}
+
 export {
     clearQueryLineFromParam,
-    addParamToQueryLine
+    addParamToQueryLine,
+    getParamFromQueryLine
 };
