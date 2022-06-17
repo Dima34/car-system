@@ -178,6 +178,8 @@ export default function MainPage(props) {
   async function getPagesByQuery(queryToSearch) {
     let resultObj = (await makeSearchQuery(queryToSearch)).data.result
       .search_result;
+
+    console.log(await makeSearchQuery(queryToSearch));
     return Math.ceil(resultObj.count / resAmount);
   }
 
@@ -309,22 +311,22 @@ export default function MainPage(props) {
                 ))}
               </CollectionGrid>
             ) : null}
+
+            {paginationPages.length > 0 ? (
+              <Container addClass="pagination">
+                <ul>
+                  {paginationPages.slice(0,10).map((el, id) => (
+                    <li key={id}>
+                      <button onClick={() => makeSearch(el.pageQuery)}>
+                        {el.pagenum}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </Container>
+            ) : null}
           </Container>
         )}
-
-        {paginationPages.length > 0 ? (
-          <Container addClass="pagination">
-            <ul>
-              {paginationPages.map((el, id) => (
-                <li key={id}>
-                  <button onClick={() => makeSearch(el.pageQuery)}>
-                    {el.pagenum}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </Container>
-        ) : null}
       </main>
     </div>
   );
