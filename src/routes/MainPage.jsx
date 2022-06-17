@@ -4,28 +4,32 @@ import Collection from "../components/Collections/Collections";
 import Filter from "../components/Filter/Filter";
 import MainGrid from "../components/MainGrid/MainGrid";
 import {
-  getCarIdsByQuery,
-  getCarById,
   getMarks,
   getStates,
   getModels,
   createQueryLine,
   makeSearchQuery,
+  getCarsByQuery,
 } from "../API.js";
 import {
   getCollectionItem,
   getCollections,
   removeCollectionItemById,
   addCollectionItem,
+  getCollectionCardList,
 } from "../collections";
 import CollectionCard from "../components/CollectionCard/CollectionCard";
 import Container from "../components/Container/Container";
 import CollectionGrid from "../components/CollectionGrid/CollectionGrid";
+import { addParamToQueryLine } from "../queryLineHandlers";
+import { Link } from "react-router-dom";
 
 export default function MainPage(props) {
   const [marks, setMarks] = useState([]);
   const [models, setModels] = useState([]);
   const [states, setStates] = useState([]);
+  const [resAmount, setResAmount] = useState(6);
+  const [paginationPages, setPaginationPages] = useState([]);
   const [queryLine, setQueryLine] = useState("");
   const [carList, setСarList] = useState(null);
   const [collectionCardList, setCollectionCardList] = useState(null);
@@ -171,193 +175,64 @@ export default function MainPage(props) {
     }));
   }
 
-  async function getCarsByQuery(queryToSearch, maxLength = null) {
-    let carIds = await getCarIdsByQuery(queryToSearch);
+  async function getPagesByQuery(queryToSearch) {
+    let resultObj = (await makeSearchQuery(queryToSearch)).data.result
+      .search_result;
+    return Math.ceil(resultObj.count / resAmount);
+  }
 
-    if (maxLength) carIds = carIds.slice(0, maxLength);
+  async function setPaginationByQuery(queryToSearch) {
+    let pagesAmount = await getPagesByQuery(queryToSearch);
 
-    let carsById = [];
-    for (let carId of carIds) {
-      await getCarById(carId).then((car) => {
-        carsById.push(car);
-      });
+    let paginationArr = [];
+
+    for (let i = 0; i < pagesAmount; i++) {
+      let paginationItem = {
+        pagenum: i + 1,
+        pageQuery: addParamToQueryLine(queryToSearch, "page", i),
+      };
+
+      if (paginationItem === 0) paginationItem.active = true;
+
+      paginationArr.push(paginationItem);
     }
 
-    return carsById;
+    console.log(`set pagination...`);
+
+    setPaginationPages(paginationArr);
+  }
+
+  async function handlePagination(queryToSearch) {
+    await setPaginationByQuery(queryToSearch);
   }
 
   async function makeSearch(queryToSearch) {
-    console.log(`Query to search - `, queryToSearch);
     setCollectionCardList(null);
     setIsFetching(true);
 
-    let cars = await getCarsByQuery(queryToSearch);
+    let queryIncludesItemAmount = addParamToQueryLine(
+      queryToSearch,
+      "countpage",
+      resAmount
+    );
+
+    let cars = await getCarsByQuery(queryIncludesItemAmount);
     setСarList(cars);
 
+    await handlePagination(queryIncludesItemAmount);
+
     setIsFetching(false);
-  }
-
-  function clearQueryLineFromParam(queryLine, paramName) {
-    let lineParams = new URLSearchParams(queryLine);
-
-    // lineParams.delete("price_ot[0]")
-    // lineParams.delete("price_do[0]")
-    lineParams.delete(paramName);
-
-    return "&" + decodeURIComponent(lineParams.toString());
-  }
-
-  async function getAllQueryCarResults(query) {
-    return (await makeSearchQuery(query)).data.result.search_result.count
-  }
-
-  function addParamToQueryLine(queryLine, paramName, paramValue) {
-    let lineParams = new URLSearchParams(queryLine);
-
-    lineParams.set(paramName, paramValue);
-
-    let newParamLine = "&" + decodeURIComponent(lineParams.toString())
-
-    // console.log(`\nold line - `,queryLine);
-    // console.log(`new line - `,newParamLine);
-
-    return newParamLine;
   }
 
   // Search by all collections in one time
   async function searchByCollections(params) {
     setIsFetching(true);
 
-    // Clearing car list because we dont want to display car cards and collection cards in one time
+    // Clear car list because we dont want to display car cards and collection cards in one time
     //  when we making a collections search
     setСarList(null);
 
-    let collectionsCars = [];
-
-    function addToObject(obj, name, value) {
-      obj[name] = value;
-    }
-
-    for (let collectionItem of collectionsList) {
-      let collectionCardInfo = {};
-
-      for (const item in collectionItem) {
-        let value = collectionItem[item];
-
-        switch (item) {
-          case "markaName":
-          case "modelName":
-          case "yearFrom":
-          case "yearTo":
-          case "priceFrom":
-          case "priceTo":
-          case "sortName":
-          case "stateName":
-            addToObject(collectionCardInfo, item, value);
-            break;
-          default:
-            break;
-        }
-      }
-
-      // for cheaper and more expensive variants must be an asceding
-
-      // If price from set for current collection - search 3 cheaper variants
-      if (collectionCardInfo["priceFrom"]) {
-        let priceFromValue = collectionItem["priceFrom"];
-
-        // clear line from price values
-        let newQueryLine = clearQueryLineFromParam(
-          collectionItem.queryLine,
-          "price_ot[0]"
-        );
-        newQueryLine = clearQueryLineFromParam(
-          newQueryLine,
-          "price_do[0]"
-        );
-
-        // add a price to attribute
-        newQueryLine = addParamToQueryLine(
-          newQueryLine,
-          "price_do[0]",
-          priceFromValue
-        );
-
-        // remove sotring type if its exist
-        newQueryLine = clearQueryLineFromParam(
-          newQueryLine,
-          "order_by"
-        );
-
-        // add  sotring type
-        newQueryLine = addParamToQueryLine(
-          newQueryLine,
-          "order_by",
-          "3"
-        );
-
-        collectionCardInfo.cheaperQuantity = await getAllQueryCarResults(newQueryLine)
-        collectionCardInfo.cheaperQueryLine = newQueryLine
-
-        await getCarsByQuery(newQueryLine, 6).then((car) => {
-          collectionCardInfo.cheaperQueryRes = car;
-        });
-      }
-
-      // Searching results which fit to query
-      await getCarsByQuery(collectionItem.queryLine, 6).then((car) => {
-        collectionCardInfo.fitQueryRes = car;
-      });
-
-      collectionCardInfo.fitQuantity = await getAllQueryCarResults(collectionItem.queryLine)
-      collectionCardInfo.fitQueryLine = collectionItem.queryLine
-
-      // If price to set for current collection - search 3 more expensive variants
-      if (collectionCardInfo["priceTo"]) {
-        let priceToValue = collectionItem["priceTo"];
-
-        // clear line from price values
-        let newQueryLine = clearQueryLineFromParam(
-          collectionItem.queryLine,
-          "price_ot[0]"
-        );
-        newQueryLine = clearQueryLineFromParam(
-          newQueryLine,
-          "price_do[0]"
-        );
-
-        // add a price to attribute
-        newQueryLine = addParamToQueryLine(
-          newQueryLine,
-          "price_ot[0]",
-          priceToValue
-        );
-
-        // remove sotring type if its exist
-        newQueryLine = clearQueryLineFromParam(
-          newQueryLine,
-          "order_by"
-        );
-
-        // add sotring type
-        newQueryLine = addParamToQueryLine(
-          newQueryLine,
-          "order_by",
-          "2"
-        );
-
-        collectionCardInfo.moreExpensiveQuantity = await getAllQueryCarResults(newQueryLine)
-        collectionCardInfo.moreExpensiveQueryLine = newQueryLine
-
-        await getCarsByQuery(newQueryLine,6).then((car) => {
-          collectionCardInfo.moreExpensiveQueryRes = car;
-        });
-      }
-
-      collectionsCars.push(collectionCardInfo);
-    }
-
-    setCollectionCardList(collectionsCars);
+    setCollectionCardList(await getCollectionCardList(collectionsList));
 
     setIsFetching(false);
   }
@@ -376,8 +251,7 @@ export default function MainPage(props) {
   }
 
   function removeItemFromCollection(id) {
-    let newCollection = removeCollectionItemById(id);
-    setCollectionItemsList(newCollection);
+    setCollectionItemsList(removeCollectionItemById(id));
   }
 
   return (
@@ -410,24 +284,47 @@ export default function MainPage(props) {
           <h1>Загрузка...</h1>
         ) : (
           <Container>
-            {carList != null ? 
+            {carList != null ? (
               carList.length > 0 ? (
-              <MainGrid>
-                {carList.map((car) => (
-                  <CarCard car={car} key={car.secureKey} />
-                ))}
-              </MainGrid>
-            ) : <h1>Нету результатов. Попробуйте изменить поисковой запрос</h1> : null}
+                <div className="mainContainer">
+                  <MainGrid>
+                    {carList.map((car) => (
+                      <CarCard car={car} key={car.secureKey} />
+                    ))}
+                  </MainGrid>
+                </div>
+              ) : (
+                <h1>Нету результатов. Попробуйте изменить поисковой запрос</h1>
+              )
+            ) : null}
 
             {collectionCardList != null ? (
               <CollectionGrid>
                 {collectionCardList.map((cardInfo) => (
-                  <CollectionCard makeSearch = {makeSearch} key={cardInfo.secureKey} data={cardInfo} />
+                  <CollectionCard
+                    makeSearch={makeSearch}
+                    key={cardInfo.secureKey}
+                    data={cardInfo}
+                  />
                 ))}
               </CollectionGrid>
             ) : null}
           </Container>
         )}
+
+        {paginationPages.length > 0 ? (
+          <Container addClass="pagination">
+            <ul>
+              {paginationPages.map((el, id) => (
+                <li key={id}>
+                  <button onClick={() => makeSearch(el.pageQuery)}>
+                    {el.pagenum}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </Container>
+        ) : null}
       </main>
     </div>
   );

@@ -43,6 +43,20 @@ async function makeRequest(queryLine) {
   return axios(queryLine);
 }
 
+async function getCarsByQuery(queryToSearch, maxLength = null) {
+  let carIds = await getCarIdsByQuery(queryToSearch);
+
+  if (maxLength) carIds = carIds.slice(0, maxLength);
+
+  let carsById = [];
+  for (let carId of carIds) {
+    await getCarById(carId).then((car) => {
+      carsById.push(car);
+    });
+  }
+
+  return carsById;
+}
 
 function createQueryLine(filterValueObj) {
   let line = "";
@@ -97,5 +111,6 @@ export {
   getStates,
   getModels,
   createQueryLine,
-  makeSearchQuery
+  makeSearchQuery,
+  getCarsByQuery
 };
