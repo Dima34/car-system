@@ -7,16 +7,21 @@ export default function CollectionCardResults(props) {
     return(
         <DropDown isOpened = {props.isOpened ? true : null} title={props.title}>
             <div className={s.collectionCardContainer}>
-            <ul className={s.collectionCardList}>
-                    {props.carList.map(item=>(
-                        <li key={item.id}>
-                            <CarCard car = {item}/>
-                        </li>
-                    ))}
+                <ul className={s.collectionCardList}>
+                        {props.carList.map(item=>(
+                            <li key={item.id}>
+                                <CarCard car = {item}/>
+                            </li>
+                        ))}
                 </ul>
-                <div className={s.collectionCardSearchAll}>
-                    <button onClick={()=>props.makeSearch(props.searchQuery)} className="link p">Показать еще</button>
-                </div>
+                {
+                    props.resAmount > 6 ? (
+                        <div className={s.collectionCardSearchAll}>
+                            <button onClick={()=>props.makeSearch(props.searchQuery)} className="link p">Показать еще</button>
+                        </div>
+                    ) : null
+                }
+                
             </div>            
         </DropDown>
     )

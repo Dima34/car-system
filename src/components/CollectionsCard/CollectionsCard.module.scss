@@ -39,6 +39,13 @@
     }
 
     &:hover{
+        // border: 1px solid #DB5C4C;
+        box-shadow: 0px 0px 13px #DB5C4C;
+    }
+
+    &:focus{
         border: 1px solid #DB5C4C;
+        outline-color: #DB5C4C;
+        box-shadow: 0px 0px 13px #DB5C4C;
     }
 }

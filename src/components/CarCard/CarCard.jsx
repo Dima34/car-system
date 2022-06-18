@@ -29,7 +29,7 @@ export default function CarCard(props) {
 
     return(
         <Container addClass = {s.card}>
-            <Link target="_blank" rel="noopener noreferrer" to={"/"+car.autoData.autoId}>
+            <Link className={s["main-image-link"]} target="_blank" rel="noopener noreferrer" to={"/"+car.autoData.autoId}>
                 <img className={s["main-image"]} src={`${car.photoData.seoLinkB}`} alt={`${car.title}`} />
             </Link>
 

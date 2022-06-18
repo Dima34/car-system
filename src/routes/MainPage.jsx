@@ -23,6 +23,7 @@ import Container from "../components/Container/Container";
 import CollectionGrid from "../components/CollectionGrid/CollectionGrid";
 import { addParamToQueryLine, getParamFromQueryLine } from "../queryLineHandlers";
 import { Link } from "react-router-dom";
+import Pagination from "../components/Pagination/Pagination";
 
 export default function MainPage(props) {
   const [marks, setMarks] = useState([]);
@@ -214,8 +215,6 @@ export default function MainPage(props) {
     }
     
     setPaginationPages(newPaginationList);
-
-    console.log(`param name - `,newPaginationList);
   }
 
   async function makeSearch(queryToSearch) {
@@ -324,17 +323,7 @@ export default function MainPage(props) {
             ) : null}
 
             {paginationPages.length > 0 ? (
-              <Container addClass="pagination">
-                <ul>
-                  {paginationPages.slice(0,10).map((el, id) => (
-                    <li key={id}>
-                      <button style={el.active ? {"color":"red"} : null} onClick={() => makeSearch(el.pageQuery)}>
-                        {el.pagenum}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </Container>
+              <Pagination items = {paginationPages} makeSearch = {makeSearch}/>
             ) : null}
           </Container>
         )}

@@ -1,0 +1,49 @@
+.container{
+  display: grid;
+  grid-template-columns: 125px 1fr 125px;
+  gap: 15px;
+  align-items: center;
+  margin-top: 30px;
+}
+
+.navigationButton{
+  padding: 13px;
+  display: flex;
+  column-gap: 5px;
+  align-items: center;
+  color: #256799;
+  height: fit-content;
+  border-radius: 12px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  font-size: 18px;
+}
+
+.navigationButton:hover{
+  text-decoration: underline;
+}
+
+.navigationButton:active{
+  color: #DB5C4C;
+}
+
+.navigationButton:focus{
+  outline-color: #409B0C;
+  box-shadow: 0px 0px 13px #409B0C;
+}
+
+.paginationContainer{
+  display: flex;
+  margin: 0 auto;
+  column-gap: 10px;
+}
+
+.active{
+  background: #79BE00;
+  color: white;
+}
+
+.etc{
+  display: flex;
+  align-items: center;
+}

@@ -11,6 +11,12 @@
     height: 165px;
     object-fit: cover;
     border-radius: 12px;
+    display: block;
+}
+
+.main-image-link:focus{
+    outline-color: #DB5C4C;
+    border-radius: 12px;
 }
 
 .price{

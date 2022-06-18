@@ -69,6 +69,7 @@ export default function CollectionCard(props) {
                         title = {`Дешевле (${data.cheaperQuantity})`}
                         makeSearch = {props.makeSearch}
                         searchQuery = {data.cheaperQueryLine}
+                        resAmount = {data.cheaperQuantity}
                     />
                 ) : null
             }
@@ -83,6 +84,7 @@ export default function CollectionCard(props) {
                         isOpened = {true}
                         makeSearch = {props.makeSearch}
                         searchQuery = {data.fitQueryLine}
+                        resAmount = {data.fitQuantity}
                     />
                 ) : (
                     <h2>Нет результатов</h2>
@@ -98,6 +100,7 @@ export default function CollectionCard(props) {
                     title = {`Дороже (${data.moreExpensiveQuantity})`}
                     makeSearch = {props.makeSearch}
                     searchQuery = {data.moreExpensiveQueryLine}
+                    resAmount = {data.moreExpensiveQuantity}
                     />
                 ) : null
             }            
