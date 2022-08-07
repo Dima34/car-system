@@ -20,8 +20,7 @@ export default function CollectionCardResults(props) {
                             <button onClick={()=>props.makeSearch(props.searchQuery)} className="link p">Показать еще</button>
                         </div>
                     ) : null
-                }
-                
+                }                
             </div>            
         </DropDown>
     )

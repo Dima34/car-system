@@ -1,9 +1,9 @@
 import classNames from "classnames";
 import Container from "../Container/Container";
-import s from "./CollectionsCard.module.scss";
+import s from "./SavedCollectionsCard.module.scss";
 import removeIcon from "../../icons/remove-ico.svg";
 
-export default function CollectionCard(props) {
+export default function SavedCollectionsCard(props) {
   let item = props.data;
 
   const marka = item.markaName;

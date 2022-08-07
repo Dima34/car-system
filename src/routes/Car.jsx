@@ -14,7 +14,6 @@ export default function Car(props) {
         setIsFetching(false)        
     }, [])
 
-    console.log(carInfo);
 
     return (
         <div className="wrapper">

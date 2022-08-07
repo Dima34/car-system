@@ -1,8 +1,8 @@
-import CollectionsCard from "../CollectionsCard/CollectionsCard";
+import CollectionsCard from "../SavedCollectionsCard/SavedCollectionsCard";
 import Container from "../Container/Container";
-import s from "./Collections.module.css";
+import s from "./SavedCollections.module.css";
 
-function Collection(props) {
+function SavedCollections(props) {
     return(
         <Container addClass = {s.collections}>
             <h2 className="h1 gray">Коллекции</h2>
@@ -23,6 +23,6 @@ function Collection(props) {
     )
 }
 
-export default Collection
+export default SavedCollections
 
 

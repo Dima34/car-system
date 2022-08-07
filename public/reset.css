@@ -25,3 +25,7 @@ button{
     border: 0;
     cursor: pointer;
 }
+
+body{
+    margin: 0;
+}

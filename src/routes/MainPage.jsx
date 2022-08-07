@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import CarCard from "../components/CarCard/CarCard";
-import Collection from "../components/Collections/Collections";
+import SavedCollections from "../components/SavedCollections/SavedCollections";
 import Filter from "../components/Filter/Filter";
 import MainGrid from "../components/MainGrid/MainGrid";
 import {
@@ -18,12 +18,12 @@ import {
   addCollectionItem,
   getCollectionCardList,
 } from "../collections";
-import CollectionCard from "../components/CollectionCard/CollectionCard";
 import Container from "../components/Container/Container";
 import CollectionGrid from "../components/CollectionGrid/CollectionGrid";
 import { addParamToQueryLine, getParamFromQueryLine } from "../queryLineHandlers";
-import { Link } from "react-router-dom";
 import Pagination from "../components/Pagination/Pagination";
+import CollectionCard from "../components/CollectionCard/CollectionCard";
+
 
 export default function MainPage(props) {
   const [marks, setMarks] = useState([]);
@@ -37,10 +37,10 @@ export default function MainPage(props) {
   const [collectionsList, setCollectionItemsList] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
   const sortTypes = [
-    {
-      name: "1",
-      value: 1,
-    },
+    // {
+    //   name: "1",
+    //   value: 1,
+    // },
     {
       name: "По возрастанию цены",
       value: 2,
@@ -49,50 +49,50 @@ export default function MainPage(props) {
       name: "По убыванию цены",
       value: 3,
     },
-    {
-      name: "4",
-      value: 4,
-    },
+    // {
+    //   name: "4",
+    //   value: 4,
+    // },
     {
       name: "По возрастанию пробега",
       value: 5,
     },
-    {
-      name: "1",
-      value: 6,
-    },
+    // {
+    //   name: "1",
+    //   value: 6,
+    // },
     {
       name: "По новизне",
       value: 7,
     },
-    {
-      name: "8",
-      value: 8,
-    },
-    {
-      name: "9",
-      value: 9,
-    },
-    {
-      name: "10",
-      value: 10,
-    },
-    {
-      name: "11",
-      value: 11,
-    },
-    {
-      name: "12",
-      value: 12,
-    },
-    {
-      name: "13",
-      value: 13,
-    },
-    {
-      name: "14",
-      value: 14,
-    },
+    // {
+    //   name: "8",
+    //   value: 8,
+    // },
+    // {
+    //   name: "9",
+    //   value: 9,
+    // },
+    // {
+    //   name: "10",
+    //   value: 10,
+    // },
+    // {
+    //   name: "11",
+    //   value: 11,
+    // },
+    // {
+    //   name: "12",
+    //   value: 12,
+    // },
+    // {
+    //   name: "13",
+    //   value: 13,
+    // },
+    // {
+    //   name: "14",
+    //   value: 14,
+    // },
   ];
 
   const [filterValueObj, setValueObj] = useState({
@@ -180,7 +180,6 @@ export default function MainPage(props) {
     let resultObj = (await makeSearchQuery(queryToSearch)).data.result
       .search_result;
 
-    console.log(await makeSearchQuery(queryToSearch));
     return Math.ceil(resultObj.count / resAmount);
   }
 
@@ -236,7 +235,7 @@ export default function MainPage(props) {
   }
 
   // Search by all collections in one time
-  async function searchByCollections(params) {
+  async function searchByCollections() {
     setIsFetching(true);
 
     // Clear car list because we dont want to display car cards and collection cards in one time
@@ -284,7 +283,7 @@ export default function MainPage(props) {
         />
 
         {collectionsList.length > 0 ? (
-          <Collection
+          <SavedCollections
             collectionsList={collectionsList}
             removeItemFromCollection={removeItemFromCollection}
             searchByCollection={searchByCollection}

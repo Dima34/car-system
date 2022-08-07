@@ -43,18 +43,6 @@
         url('fonts/inter-v11-latin_cyrillic-800.woff2') format('woff2');
 }
 
-h2,
-h1,
-h3,
-p,
-li,
-ul,
-label,
-select,
-button {
-    font-family: 'Inter';
-}
-
 :root {
     --h1: 800 24px / 100% 'Inter';
     --h2: 800 20px / 100% 'Inter';
@@ -108,7 +96,18 @@ button {
     font: var(--p);
 }
 
-
 button {
     font: var(--h2);
+}
+
+h2,
+h1,
+h3,
+p,
+li,
+ul,
+label,
+select,
+button {
+    font-family: 'Inter';
 }
