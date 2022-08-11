@@ -1,0 +1,26 @@
+.pricenrace{
+    display: grid;
+    grid-template-columns: min-content 1fr;
+    gap: 10px;
+    align-items: flex-end;
+}
+
+.infoPlague{
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    column-gap: 10px;
+}
+
+.info{
+    display: grid;
+    row-gap: 10px;
+}
+
+.infoList{
+    display: grid;
+    row-gap: 5px;
+}
+
+.pageLink{
+    text-align: center;
+}
