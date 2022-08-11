@@ -6,23 +6,7 @@ import gearboxIco from "../../icons/gearbox-ico.svg"
 import mileIco from "../../icons/mile-ico.svg"
 import stateIco from "../../icons/state-ico.svg"
 import PostTime from "../PostTime/PostTime";
-
-function priceFilter(priceLine) {
-    let newLine = "";
-    priceLine = priceLine.toString().split("").reverse();
-
-    priceLine.forEach((char,index) => {
-        newLine += char;
-
-        if ((index + 1) % 3 === 0) {
-            newLine += "\u00A0"
-        }
-    });
-
-    newLine = newLine.split("").reverse().join("")
-
-    return newLine
-}
+import priceFilter from "../../utils";
 
 export default function CarCard(props) {
     const car = props.car;
